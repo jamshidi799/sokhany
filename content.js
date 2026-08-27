@@ -232,15 +232,7 @@
       return;
     }
 
-    // Not in the thread view yet: click Mattermost's own reply control
-    // to open the thread, then wait for the RHS reply box to mount.
-    const replyBtn = postEl.querySelector(
-      '[aria-label="Reply"], .icon--reply, .CommentIcon',
-    );
-    if (replyBtn) {
-      (replyBtn.closest("button, a") || replyBtn).click();
-    }
-    waitFor("#reply_textbox")
+    waitFor("textarea")
       .then(doInsert)
       .catch(() => {
         console.warn("[mm-quote-reply] could not find reply textbox");

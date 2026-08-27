@@ -20,6 +20,8 @@ You can then type your reply below the quote and send as normal.
    multiple entries in the `matches` array if you use more than one
    instance.
 
+   The default value is: `https://chat.platform.sotoon.ir/*`
+
 ### Chrome / Edge / Brave / other Chromium browsers
 
 2. Go to `chrome://extensions` (or `edge://extensions`, etc.).
@@ -41,26 +43,6 @@ You can then type your reply below the quote and send as normal.
      — feel free to change `mattermost-quote-reply@example.com` to
      something unique to you, but it's not required for local testing.
 4. Open Mattermost and test the same way as above.
-
-## If the button doesn't show up or insertion fails
-
-Mattermost's DOM/class names differ slightly between versions and themes.
-Open DevTools (`F12`) on a message and check:
-
-- **Button not appearing**: inspect the hover-controls container above a
-  message (the row with the reply arrow, emoji icon, "..." menu) and find
-  its actual class. Update the selector in `content.js`, function
-  `injectButtons`, line with:
-  ```js
-  postEl.querySelector('.post-menu, .post__header .col__reply, .post-menu__content')
-  ```
-- **Quote text is empty**: inspect the message body element's class and
-  update `getPostText`'s selector.
-- **Author name missing**: update `getPostAuthor`'s selector.
-- **Text doesn't land in the reply box**: Mattermost's reply textarea id
-  is normally `#reply_textbox` (thread) and `#post_textbox` (main
-  channel composer). If your version uses different ids, update
-  `findTextbox`.
 
 ## Notes
 
