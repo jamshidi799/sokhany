@@ -1,0 +1,31 @@
+.mm-quote-reply-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 4px 6px;
+  margin-left: 2px;
+  border-radius: 4px;
+  color: var(--center-channel-color, #3f4350);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.post:hover .mm-quote-reply-btn,
+.mm-quote-reply-btn:focus {
+  opacity: 0.75;
+  visibility: visible;
+}
+
+.mm-quote-reply-btn:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Mattermost's theme adds a decorative character before blockquotes via
+   ::before, which can render as a broken-glyph box if the font doesn't
+   have that character. Remove it entirely. */
+blockquote::before {
+  content: none !important;
+}
