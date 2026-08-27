@@ -6,8 +6,14 @@
   // the native setter and fires an 'input' event so React notices.
   function setNativeValue(element, value) {
     const proto = Object.getPrototypeOf(element);
-    const descriptor = Object.getOwnPropertyDescriptor(proto, "value");
-    descriptor.set.call(element, value);
+    const descriptor =
+      Object.getOwnPropertyDescriptor(proto, "value") ||
+      Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value");
+    if (descriptor && descriptor.set) {
+      descriptor.set.call(element, value);
+    } else if ("value" in element) {
+      element.value = value;
+    }
     element.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
@@ -179,12 +185,42 @@
     return `${quoted}\n\n`;
   }
 
+  // RHS thread panel AND Global Threads (/:team/threads) both use
+  // #reply_textbox. Global Threads is not inside #rhsContainer — it
+  // renders a ThreadViewer/ThreadPane in the center column instead.
+  const THREAD_ROOT_SELECTOR = [
+    "#rhsContainer",
+    ".sidebar-right__body",
+    ".ThreadViewer",
+    ".ThreadPane",
+    ".GlobalThreads",
+    '[data-testid="comment-create"]',
+  ].join(", ");
+
+  const TEXTBOX_SELECTOR = [
+    "#reply_textbox",
+    "#post_textbox",
+    '[data-testid="reply_textbox"]',
+    '[data-testid="post_textbox"]',
+  ].join(", ");
+
+  function isInThreadContext(postEl) {
+    if (postEl.closest(THREAD_ROOT_SELECTOR)) return true;
+    return /\/threads(\/|$)/.test(location.pathname);
+  }
+
   function findTextbox(postEl) {
-    const inThread = postEl.closest("#rhsContainer, .sidebar-right__body");
-    if (inThread) {
-      return document.querySelector("#reply_textbox");
+    const reply =
+      document.querySelector("#reply_textbox") ||
+      document.querySelector('[data-testid="reply_textbox"]');
+    const post =
+      document.querySelector("#post_textbox") ||
+      document.querySelector('[data-testid="post_textbox"]');
+
+    if (isInThreadContext(postEl)) {
+      return reply || post;
     }
-    return document.querySelector("#post_textbox");
+    return post || reply;
   }
 
   function waitFor(selector, timeout = 4000) {
@@ -213,26 +249,26 @@
     const permalink = getPostPermalink(postEl);
     const quote = buildQuote(text, permalink);
 
-    const alreadyInThread = postEl.closest(
-      "#rhsContainer, .sidebar-right__body",
-    );
-
     const doInsert = () => {
       const box = findTextbox(postEl);
       if (!box) return;
       const existing = box.value || "";
       box.focus();
       setNativeValue(box, existing ? existing + quote : quote);
-      const end = box.value.length;
-      box.setSelectionRange(end, end);
+      if (typeof box.setSelectionRange === "function") {
+        const end = box.value.length;
+        box.setSelectionRange(end, end);
+      }
     };
 
-    if (alreadyInThread) {
+    // Global Threads already shows the reply composer next to the
+    // selected thread; there is no extra panel to wait for.
+    if (isInThreadContext(postEl) && findTextbox(postEl)) {
       doInsert();
       return;
     }
 
-    waitFor("textarea")
+    waitFor(TEXTBOX_SELECTOR)
       .then(doInsert)
       .catch(() => {
         console.warn("[mm-quote-reply] could not find reply textbox");
