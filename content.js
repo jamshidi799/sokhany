@@ -273,7 +273,15 @@
       );
       if (!controls) return; // not mounted yet, try again on next mutation
       postEl.setAttribute(DONE_ATTR, "1");
-      controls.appendChild(createButton(postEl));
+      const btn = createButton(postEl);
+      // Place it second from the right so Mattermost's last action
+      // (usually "…") stays the rightmost button.
+      const last = controls.lastElementChild;
+      if (last) {
+        controls.insertBefore(btn, last);
+      } else {
+        controls.appendChild(btn);
+      }
     });
   }
 
