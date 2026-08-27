@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Mattermost Quote Reply",
+  "name": "Sokhany",
   "version": "1.0.0",
   "description": "Adds a 'Quote reply' button to Mattermost messages that inserts a markdown quote of the message into the reply box.",
   "icons": {
@@ -10,7 +10,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "mattermost-quote-reply@example.com",
+      "id": "sokhany@example.com",
       "strict_min_version": "109.0"
     }
   },

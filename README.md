@@ -1,4 +1,4 @@
-# Mattermost Quote Reply
+# Sokhany
 
 Adds a small ❝ **Quote reply** button to each message’s hover menu in
 Mattermost (second from the right, next to the usual emoji / reply / **…**
@@ -77,7 +77,7 @@ shows up on messages that were already on screen.
 
 2. Go to `chrome://extensions` (or `edge://extensions`, etc.).
 3. Enable **Developer mode** (top right).
-4. Click **Load unpacked** and select the `mattermost-quote-reply` folder.
+4. Click **Load unpacked** and select the `sokhany` folder.
 5. Open Mattermost and hover over a message — you should see the ❝ button
    next to the existing reply/emoji/... controls.
 
@@ -85,13 +85,13 @@ shows up on messages that were already on screen.
 
 2. Go to `about:debugging#/runtime/this-firefox`.
 3. Click **Load Temporary Add-on** and select `manifest.json` inside the
-   `mattermost-quote-reply` folder.
+   `sokhany` folder.
    - This load lasts until you close Firefox. For a permanent install
      you'd need to sign the extension via Mozilla's add-on tooling, or
      set `xpinstall.signatures.required` to `false` in a Developer
      Edition / Nightly build.
    - The manifest already includes a `browser_specific_settings.gecko.id`
-     — feel free to change `mattermost-quote-reply@example.com` to
+     — feel free to change `sokhany@example.com` to
      something unique to you, but it's not required for local testing.
 4. Open Mattermost and test the same way as above.
 
