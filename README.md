@@ -1,16 +1,67 @@
 # Mattermost Quote Reply
 
-Adds a small ❝ button to each message in Mattermost. Clicking it opens the
-thread (if not already open) and inserts a markdown blockquote of that
-message into the reply textbox, e.g.:
+Adds a small ❝ **Quote reply** button to each message’s hover menu in
+Mattermost (second from the right, next to the usual emoji / reply / **…**
+controls). Clicking it inserts a markdown blockquote of that message into
+the composer, with the quoted text linked to the original post so others
+can jump to it.
+
+Example of what gets inserted:
 
 ```
-> **Jane Doe** wrote:
-> This is the original message
+> [This is the original message](https://chat.example.com/team/pl/abc123)
 
 ```
 
-You can then type your reply below the quote and send as normal.
+Type your reply below the quote and send as usual.
+
+## How to use
+
+1. Hover a message. The ❝ button appears in the post’s action bar.
+2. Click ❝.
+   - If you had **no text selected**, the whole message is quoted (up to
+     100 characters; longer text is cut at a word boundary and ends with
+     `…`).
+   - If you **selected text inside that message** first, only the
+     selection is quoted. A leftover selection in another message is
+     ignored.
+3. The quote is written into the relevant composer and the cursor is
+   placed after it so you can type immediately.
+4. Send the post like any other Mattermost message.
+
+Clicking a quoted line in the resulting post follows the permalink and
+Mattermost highlights the original message.
+
+## Where it works
+
+| You are in | Quote goes into |
+| --- | --- |
+| A channel (center pane) | The channel composer (`Write to …`) |
+| A thread in the right-hand sidebar | That thread’s reply box |
+| **Threads** (`/threads`) with a thread selected | That thread’s reply box |
+
+You can quote from the root post or from any reply in the thread.
+
+## Other cases
+
+- **Composer already has text.** The new quote is appended after whatever
+  is already in the box, so you can stack several quotes or keep a draft.
+- **Message that is itself a quote-reply.** Nested `>` quote lines are
+  stripped; only the author’s new text is quoted.
+- **Emoji.** Custom and standard emoji are quoted as their alt text
+  (`:shortcode:` or the emoji character), not as broken image placeholders.
+- **Attachments / images / reactions.** Those are left out of the quote;
+  only the message text is used.
+- **Empty or unreadable posts.** If there is no quotable text, nothing is
+  inserted.
+- **Cross-thread or cross-team reply.** Because each quoted line is a
+  permalink to the original post, you can quote a message, copy the
+  generated text from the composer, and paste it in another thread,
+  channel, or team. Recipients can click the quote and jump to the
+  source.
+
+After installing, reload Mattermost (or the extension) once so the button
+shows up on messages that were already on screen.
 
 ## Install (unpacked, for your own use)
 
