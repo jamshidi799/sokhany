@@ -17,6 +17,8 @@ Type your reply below the quote and send as usual.
 
 ## How to use
 
+<img src="quote-reply-example.png" alt="Quote replies in a Mattermost thread: whole-message quotes, a quote of a selected snippet, and stacked quotes in one reply" width="420">
+
 1. Hover a message. The ❝ button appears in the post’s action bar.
 2. Click ❝.
    - If you had **no text selected**, the whole message is quoted (up to
